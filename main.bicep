@@ -9,48 +9,146 @@ metadata author = 'Infrastructure Team'
 // ============================================
 
 // 基本設定
+@metadata({
+  description: 'Azureリージョン (例: japaneast, eastus)'
+})
 param location string = resourceGroup().location
+
 @minLength(3)
 @maxLength(24)
+@metadata({
+  description: 'プロジェクト名 (リソース名の接頭辞)'
+})
 param projectName string = 'handson'
+
 @minLength(3)
 @maxLength(3)
+@metadata({
+  description: 'ユーザー番号 (3桁: 001-050)'
+})
 param userNumber string = '001'
+
+@metadata({
+  description: '環境名 (dev/prod など)'
+})
 param environment string = 'dev'
 
 // VM設定
+@metadata({
+  description: '仮想マシン名'
+})
 param vmName string = 'vm-${userNumber}'
+
+@metadata({
+  description: '仮想マシンのサイズ (例: Standard_D2s_v3, Standard_D4s_v3)'
+})
 param vmSize string = 'Standard_D2s_v3'
+
+@metadata({
+  description: 'VM管理者ユーザー名'
+})
 param vmAdminUsername string = 'azureuser'
+
+@metadata({
+  description: 'VM管理者パスワード (8文字以上、大文字・小文字・数字・特殊文字を含む)'
+})
 @secure()
 param vmAdminPassword string
+
+@metadata({
+  description: 'Windows OSバージョン'
+})
 param vmOsVersion string = '2025-datacenter-azure-edition'
 
 // ストレージ設定
 @minLength(3)
 @maxLength(24)
+@metadata({
+  description: 'ストレージアカウント名'
+})
 param storageName string = 'sahandson${userNumber}'
+
+@metadata({
+  description: 'ストレージアカウントのSKU (Standard_RAGRS, Standard_GRS など)'
+})
 param storageSkuName string = 'Standard_RAGRS'
+
+@metadata({
+  description: 'ストレージの公開ネットワークアクセス (Disabled/Enabled)'
+})
 param storagePublicNetworkAccess string = 'Disabled'
+
+@metadata({
+  description: 'ネットワークルールのデフォルトアクション (Deny/Allow)'
+})
 param storageDefaultAction string = 'Deny'
 
 // ネットワーク設定
+@metadata({
+  description: '仮想ネットワーク名'
+})
 param vnetName string = 'vnet-handson'
+
+@metadata({
+  description: '仮想ネットワークのアドレス空間 (CIDR表記)'
+})
 param vnetAddressSpace string = '10.0.0.0/16'
+
+@metadata({
+  description: 'VM サブネット名'
+})
 param vmSubnetName string = 'vm-subnet'
+
+@metadata({
+  description: 'VM サブネットのアドレス範囲 (CIDR表記)'
+})
 param vmSubnetAddressPrefix string = '10.0.1.0/24'
+
+@metadata({
+  description: 'Private Endpoint サブネット名'
+})
 param peSubnetName string = 'pe-subnet'
+
+@metadata({
+  description: 'Private Endpoint サブネットのアドレス範囲 (CIDR表記)'
+})
 param peSubnetAddressPrefix string = '10.0.2.0/24'
 
 // Bastion設定
+@metadata({
+  description: 'Azure Bastion (Developer SKU) をデプロイするかどうか'
+})
 param enableBastion bool = true
+
+@metadata({
+  description: 'Azure Bastion のSKU (Developer/Standard)'
+})
 param bastionSkuName string = 'Developer'
+
+@metadata({
+  description: 'Azure Bastion のスケールユニット数'
+})
 param bastionScaleUnits int = 2
 
 // タグ
+@metadata({
+  description: '環境タグ (dev/staging/prod など)'
+})
 param tagEnvironment string = environment
+
+@metadata({
+  description: 'プロジェクトタグ'
+})
 param tagProject string = projectName
+
+@metadata({
+  description: 'コストセンタータグ'
+})
 param tagCostCenter string = 'IT'
+
+@metadata({
+  description: 'リソース作成日時'
+})
 param createdDate string = utcNow('u')
 
 // ============================================

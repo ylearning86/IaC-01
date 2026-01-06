@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.38.33.27573",
-      "templateHash": "2743801691479714619"
+      "templateHash": "13904619134158907198"
     },
     "description": "Azure Infrastructure as Code テンプレート - VM, Storage, Network, Bastion",
     "author": "Infrastructure Team"
@@ -13,112 +13,190 @@
   "parameters": {
     "location": {
       "type": "string",
-      "defaultValue": "[resourceGroup().location]"
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Azureリージョン (例: japaneast, eastus)"
+      }
     },
     "projectName": {
       "type": "string",
       "defaultValue": "handson",
+      "metadata": {
+        "description": "プロジェクト名 (リソース名の接頭辞)"
+      },
       "minLength": 3,
       "maxLength": 24
     },
     "userNumber": {
       "type": "string",
       "defaultValue": "001",
+      "metadata": {
+        "description": "ユーザー番号 (3桁: 001-050)"
+      },
       "minLength": 3,
       "maxLength": 3
     },
     "environment": {
       "type": "string",
-      "defaultValue": "dev"
+      "defaultValue": "dev",
+      "metadata": {
+        "description": "環境名 (dev/prod など)"
+      }
     },
     "vmName": {
       "type": "string",
-      "defaultValue": "[format('vm-{0}', parameters('userNumber'))]"
+      "defaultValue": "[format('vm-{0}', parameters('userNumber'))]",
+      "metadata": {
+        "description": "仮想マシン名"
+      }
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v3"
+      "defaultValue": "Standard_D2s_v3",
+      "metadata": {
+        "description": "仮想マシンのサイズ (例: Standard_D2s_v3, Standard_D4s_v3)"
+      }
     },
     "vmAdminUsername": {
       "type": "string",
-      "defaultValue": "azureuser"
+      "defaultValue": "azureuser",
+      "metadata": {
+        "description": "VM管理者ユーザー名"
+      }
     },
     "vmAdminPassword": {
-      "type": "securestring"
+      "type": "securestring",
+      "metadata": {
+        "description": "VM管理者パスワード (8文字以上、大文字・小文字・数字・特殊文字を含む)"
+      }
     },
     "vmOsVersion": {
       "type": "string",
-      "defaultValue": "2025-datacenter-azure-edition"
+      "defaultValue": "2025-datacenter-azure-edition",
+      "metadata": {
+        "description": "Windows OSバージョン"
+      }
     },
     "storageName": {
       "type": "string",
       "defaultValue": "[format('sahandson{0}', parameters('userNumber'))]",
+      "metadata": {
+        "description": "ストレージアカウント名"
+      },
       "minLength": 3,
       "maxLength": 24
     },
     "storageSkuName": {
       "type": "string",
-      "defaultValue": "Standard_RAGRS"
+      "defaultValue": "Standard_RAGRS",
+      "metadata": {
+        "description": "ストレージアカウントのSKU (Standard_RAGRS, Standard_GRS など)"
+      }
     },
     "storagePublicNetworkAccess": {
       "type": "string",
-      "defaultValue": "Disabled"
+      "defaultValue": "Disabled",
+      "metadata": {
+        "description": "ストレージの公開ネットワークアクセス (Disabled/Enabled)"
+      }
     },
     "storageDefaultAction": {
       "type": "string",
-      "defaultValue": "Deny"
+      "defaultValue": "Deny",
+      "metadata": {
+        "description": "ネットワークルールのデフォルトアクション (Deny/Allow)"
+      }
     },
     "vnetName": {
       "type": "string",
-      "defaultValue": "vnet-handson"
+      "defaultValue": "vnet-handson",
+      "metadata": {
+        "description": "仮想ネットワーク名"
+      }
     },
     "vnetAddressSpace": {
       "type": "string",
-      "defaultValue": "10.0.0.0/16"
+      "defaultValue": "10.0.0.0/16",
+      "metadata": {
+        "description": "仮想ネットワークのアドレス空間 (CIDR表記)"
+      }
     },
     "vmSubnetName": {
       "type": "string",
-      "defaultValue": "vm-subnet"
+      "defaultValue": "vm-subnet",
+      "metadata": {
+        "description": "VM サブネット名"
+      }
     },
     "vmSubnetAddressPrefix": {
       "type": "string",
-      "defaultValue": "10.0.1.0/24"
+      "defaultValue": "10.0.1.0/24",
+      "metadata": {
+        "description": "VM サブネットのアドレス範囲 (CIDR表記)"
+      }
     },
     "peSubnetName": {
       "type": "string",
-      "defaultValue": "pe-subnet"
+      "defaultValue": "pe-subnet",
+      "metadata": {
+        "description": "Private Endpoint サブネット名"
+      }
     },
     "peSubnetAddressPrefix": {
       "type": "string",
-      "defaultValue": "10.0.2.0/24"
+      "defaultValue": "10.0.2.0/24",
+      "metadata": {
+        "description": "Private Endpoint サブネットのアドレス範囲 (CIDR表記)"
+      }
     },
     "enableBastion": {
       "type": "bool",
-      "defaultValue": true
+      "defaultValue": true,
+      "metadata": {
+        "description": "Azure Bastion (Developer SKU) をデプロイするかどうか"
+      }
     },
     "bastionSkuName": {
       "type": "string",
-      "defaultValue": "Developer"
+      "defaultValue": "Developer",
+      "metadata": {
+        "description": "Azure Bastion のSKU (Developer/Standard)"
+      }
     },
     "bastionScaleUnits": {
       "type": "int",
-      "defaultValue": 2
+      "defaultValue": 2,
+      "metadata": {
+        "description": "Azure Bastion のスケールユニット数"
+      }
     },
     "tagEnvironment": {
       "type": "string",
-      "defaultValue": "[parameters('environment')]"
+      "defaultValue": "[parameters('environment')]",
+      "metadata": {
+        "description": "環境タグ (dev/staging/prod など)"
+      }
     },
     "tagProject": {
       "type": "string",
-      "defaultValue": "[parameters('projectName')]"
+      "defaultValue": "[parameters('projectName')]",
+      "metadata": {
+        "description": "プロジェクトタグ"
+      }
     },
     "tagCostCenter": {
       "type": "string",
-      "defaultValue": "IT"
+      "defaultValue": "IT",
+      "metadata": {
+        "description": "コストセンタータグ"
+      }
     },
     "createdDate": {
       "type": "string",
-      "defaultValue": "[utcNow('u')]"
+      "defaultValue": "[utcNow('u')]",
+      "metadata": {
+        "description": "リソース作成日時"
+      }
     }
   },
   "variables": {
