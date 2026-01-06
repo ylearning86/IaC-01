@@ -6,8 +6,6 @@ Azure ポータルからエクスポートしたテンプレートを再利用�
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fylearning86%2FIaC-01%2Fmain%2Fmain.json)
 
-> **注意**: 上記のボタンを使用する前に、`[YOUR-USERNAME]`と`[YOUR-REPO]`を実際のGitHubユーザー名とリポジトリ名に置き換えてください。
-
 ### 必須入力パラメータ
 
 Deploy to Azure ボタンを使用する場合、以下のパラメータのみ入力が必要です：
