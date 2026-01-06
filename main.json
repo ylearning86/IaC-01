@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.38.33.27573",
-      "templateHash": "13508153033500064492"
+      "templateHash": "4285259613981768786"
     },
     "description": "Azure Infrastructure as Code テンプレート - VM, Storage, Network, Bastion",
     "author": "Infrastructure Team"
@@ -705,7 +705,7 @@
     },
     "storageAccountPrimaryBlobEndpoint": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2025-01-01').primaryBlobEndpoint]"
+      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2025-01-01').primaryEndpoints.blob]"
     },
     "nicId": {
       "type": "string",
