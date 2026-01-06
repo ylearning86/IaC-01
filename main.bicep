@@ -71,7 +71,7 @@ param vmAdminPassword string
 
 // 固定値（ポータルに表示しない）
 var vmName = 'vm-${userNumber}'
-var vmOsVersion = '2025-datacenter-azure-edition'
+var vmOsVersion = '2025-datacenter'
 var storageName = 'sahandson${userNumber}'
 var storageSkuName = 'Standard_RAGRS'
 var storagePublicNetworkAccess = 'Disabled'
