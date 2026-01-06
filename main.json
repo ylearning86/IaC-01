@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.38.33.27573",
-      "templateHash": "7862197851803200187"
+      "templateHash": "16311160671920870900"
     },
     "description": "Azure Infrastructure as Code テンプレート - VM, Storage, Network, Bastion",
     "author": "Infrastructure Team"
@@ -117,8 +117,8 @@
     "resourceNaming": {
       "vm": "[variables('vmName')]",
       "nic": "[format('vm-{0}-nic', parameters('userNumber'))]",
-      "nsgVm": "[format('{0}-vm-subnet-nsg-{1}', variables('vnetName'), parameters('location'))]",
-      "nsgPe": "[format('{0}-pe-subnet-nsg-{1}', variables('vnetName'), parameters('location'))]",
+      "nsgVm": "vm-subnet-nsg",
+      "nsgPe": "pe-subnet-nsg",
       "vnet": "[variables('vnetName')]",
       "pe": "pe-handson-blob",
       "peNic": "pe-handson-blob-nic",

@@ -89,8 +89,8 @@ var enableBastion = false
 var resourceNaming = {
   vm: vmName
   nic: 'vm-${userNumber}-nic'
-  nsgVm: '${vnetName}-vm-subnet-nsg-${location}'
-  nsgPe: '${vnetName}-pe-subnet-nsg-${location}'
+  nsgVm: 'vm-subnet-nsg'
+  nsgPe: 'pe-subnet-nsg'
   vnet: vnetName
   pe: 'pe-handson-blob'
   peNic: 'pe-handson-blob-nic'
