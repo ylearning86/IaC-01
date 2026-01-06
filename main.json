@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.38.33.27573",
-      "templateHash": "4285259613981768786"
+      "templateHash": "7862197851803200187"
     },
     "description": "Azure Infrastructure as Code テンプレート - VM, Storage, Network, Bastion",
     "author": "Infrastructure Team"
@@ -119,7 +119,6 @@
       "nic": "[format('vm-{0}-nic', parameters('userNumber'))]",
       "nsgVm": "[format('{0}-vm-subnet-nsg-{1}', variables('vnetName'), parameters('location'))]",
       "nsgPe": "[format('{0}-pe-subnet-nsg-{1}', variables('vnetName'), parameters('location'))]",
-      "nsgVmLegacy": "[format('vm-{0}-nsg', parameters('userNumber'))]",
       "vnet": "[variables('vnetName')]",
       "pe": "pe-handson-blob",
       "peNic": "pe-handson-blob-nic",
@@ -131,21 +130,22 @@
     {
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2024-07-01",
-      "name": "[variables('resourceNaming').nsgVmLegacy]",
+      "name": "[variables('resourceNaming').nsgVm]",
       "location": "[parameters('location')]",
       "properties": {
         "securityRules": [
           {
             "name": "DenyInternet",
             "properties": {
-              "protocol": "*",
+              "protocol": "Tcp",
               "sourcePortRange": "*",
-              "destinationPortRange": "*",
+              "destinationPortRange": "80,443",
               "sourceAddressPrefix": "*",
               "destinationAddressPrefix": "Internet",
               "access": "Deny",
               "priority": 100,
-              "direction": "Outbound"
+              "direction": "Outbound",
+              "description": "ブラウザでのインターネット閲覧を拒否 (HTTP/HTTPS)"
             }
           }
         ]
@@ -155,15 +155,6 @@
       "type": "Microsoft.Network/networkSecurityGroups",
       "apiVersion": "2024-07-01",
       "name": "[variables('resourceNaming').nsgPe]",
-      "location": "[parameters('location')]",
-      "properties": {
-        "securityRules": []
-      }
-    },
-    {
-      "type": "Microsoft.Network/networkSecurityGroups",
-      "apiVersion": "2024-07-01",
-      "name": "[variables('resourceNaming').nsgVm]",
       "location": "[parameters('location')]",
       "properties": {
         "securityRules": []
@@ -320,24 +311,6 @@
       ]
     },
     {
-      "type": "Microsoft.Network/networkSecurityGroups/securityRules",
-      "apiVersion": "2024-07-01",
-      "name": "[format('{0}/DenyInternet', variables('resourceNaming').nsgVmLegacy)]",
-      "properties": {
-        "protocol": "*",
-        "sourcePortRange": "*",
-        "destinationPortRange": "*",
-        "sourceAddressPrefix": "*",
-        "destinationAddressPrefix": "Internet",
-        "access": "Deny",
-        "priority": 100,
-        "direction": "Outbound"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('resourceNaming').nsgVmLegacy)]"
-      ]
-    },
-    {
       "type": "Microsoft.Network/privateDnsZones/A",
       "apiVersion": "2024-06-01",
       "name": "[format('{0}/{1}', variables('resourceNaming').privateDnsZone, variables('storageName'))]",
@@ -480,15 +453,11 @@
         "enableAcceleratedNetworking": true,
         "enableIPForwarding": false,
         "disableTcpStateTracking": false,
-        "networkSecurityGroup": {
-          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('resourceNaming').nsgVmLegacy)]"
-        },
         "nicType": "Standard",
         "auxiliaryMode": "None",
         "auxiliarySku": "None"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('resourceNaming').nsgVmLegacy)]",
         "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', variables('resourceNaming').vnet, variables('vmSubnetName')), '/')[0], split(format('{0}/{1}', variables('resourceNaming').vnet, variables('vmSubnetName')), '/')[1])]"
       ]
     },

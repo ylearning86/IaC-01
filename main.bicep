@@ -91,7 +91,6 @@ var resourceNaming = {
   nic: 'vm-${userNumber}-nic'
   nsgVm: '${vnetName}-vm-subnet-nsg-${location}'
   nsgPe: '${vnetName}-pe-subnet-nsg-${location}'
-  nsgVmLegacy: 'vm-${userNumber}-nsg'
   vnet: vnetName
   pe: 'pe-handson-blob'
   peNic: 'pe-handson-blob-nic'
@@ -100,22 +99,23 @@ var resourceNaming = {
 }
 
 
-resource resourceNaming_nsgVmLegacy 'Microsoft.Network/networkSecurityGroups@2024-07-01' = {
-  name: resourceNaming.nsgVmLegacy
+resource resourceNaming_nsgVm 'Microsoft.Network/networkSecurityGroups@2024-07-01' = {
+  name: resourceNaming.nsgVm
   location: location
   properties: {
     securityRules: [
       {
         name: 'DenyInternet'
         properties: {
-          protocol: '*'
+          protocol: 'Tcp'
           sourcePortRange: '*'
-          destinationPortRange: '*'
+          destinationPortRange: '80,443'
           sourceAddressPrefix: '*'
           destinationAddressPrefix: 'Internet'
           access: 'Deny'
           priority: 100
           direction: 'Outbound'
+          description: 'ブラウザでのインターネット閲覧を拒否 (HTTP/HTTPS)'
         }
       }
     ]
@@ -124,14 +124,6 @@ resource resourceNaming_nsgVmLegacy 'Microsoft.Network/networkSecurityGroups@202
 
 resource resourceNaming_nsgPe 'Microsoft.Network/networkSecurityGroups@2024-07-01' = {
   name: resourceNaming.nsgPe
-  location: location
-  properties: {
-    securityRules: []
-  }
-}
-
-resource resourceNaming_nsgVm 'Microsoft.Network/networkSecurityGroups@2024-07-01' = {
-  name: resourceNaming.nsgVm
   location: location
   properties: {
     securityRules: []
@@ -277,23 +269,6 @@ resource resourceNaming_bastion 'Microsoft.Network/bastionHosts@2024-07-01' = if
   }
 }
 
-resource resourceNaming_nsgVmLegacy_DenyInternet 'Microsoft.Network/networkSecurityGroups/securityRules@2024-07-01' = {
-  name: '${resourceNaming.nsgVmLegacy}/DenyInternet'
-  properties: {
-    protocol: '*'
-    sourcePortRange: '*'
-    destinationPortRange: '*'
-    sourceAddressPrefix: '*'
-    destinationAddressPrefix: 'Internet'
-    access: 'Deny'
-    priority: 100
-    direction: 'Outbound'
-  }
-  dependsOn: [
-    resourceNaming_nsgVmLegacy
-  ]
-}
-
 resource resourceNaming_privateDnsZone_storage 'Microsoft.Network/privateDnsZones/A@2024-06-01' = {
   name: '${resourceNaming.privateDnsZone}/${storageName}'
   properties: {
@@ -420,9 +395,6 @@ resource resourceNaming_nic 'Microsoft.Network/networkInterfaces@2024-07-01' = {
     enableAcceleratedNetworking: true
     enableIPForwarding: false
     disableTcpStateTracking: false
-    networkSecurityGroup: {
-      id: resourceNaming_nsgVmLegacy.id
-    }
     nicType: 'Standard'
     auxiliaryMode: 'None'
     auxiliarySku: 'None'
