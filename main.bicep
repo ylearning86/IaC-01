@@ -105,17 +105,31 @@ resource resourceNaming_nsgVm 'Microsoft.Network/networkSecurityGroups@2024-07-0
   properties: {
     securityRules: [
       {
-        name: 'DenyInternet'
+        name: 'DenyInternetHttp'
         properties: {
           protocol: 'Tcp'
           sourcePortRange: '*'
-          destinationPortRange: '80,443'
+          destinationPortRange: '80'
           sourceAddressPrefix: '*'
           destinationAddressPrefix: 'Internet'
           access: 'Deny'
           priority: 100
           direction: 'Outbound'
-          description: 'ブラウザでのインターネット閲覧を拒否 (HTTP/HTTPS)'
+          description: 'ブラウザのHTTP通信を拒否'
+        }
+      }
+      {
+        name: 'DenyInternetHttps'
+        properties: {
+          protocol: 'Tcp'
+          sourcePortRange: '*'
+          destinationPortRange: '443'
+          sourceAddressPrefix: '*'
+          destinationAddressPrefix: 'Internet'
+          access: 'Deny'
+          priority: 110
+          direction: 'Outbound'
+          description: 'ブラウザのHTTPS通信を拒否'
         }
       }
     ]
