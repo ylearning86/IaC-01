@@ -4,7 +4,7 @@ Azure ポータルからエクスポートしたテンプレートを再利用�
 
 ## クイックデプロイ
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2F[YOUR-USERNAME]%2F[YOUR-REPO]%2Fmain%2Fmain.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fylearning86%2FIaC-01%2Fmain%2Fmain.json)
 
 > **注意**: 上記のボタンを使用する前に、`[YOUR-USERNAME]`と`[YOUR-REPO]`を実際のGitHubユーザー名とリポジトリ名に置き換えてください。
 
