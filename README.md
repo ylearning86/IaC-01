@@ -4,7 +4,7 @@ Azure ポータルからエクスポートしたテンプレートを再利用�
 
 ## クイックデプロイ
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fylearning86%2FIaC-01%2Fmain%2Fmain.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fylearning86%2FIaC-01%2Fmain%2Fbicep%2Fmain.json)
 
 ### 必須入力パラメータ
 
@@ -34,10 +34,12 @@ Deploy to Azure ボタンを使用する場合、以下のパラメータのみ�
 
 ```
 IaC-01/
-├── main.bicep              # メインテンプレート
-├── parameters.json         # 開発環境用パラメータ
-├── parameters.prod.json    # 本番環境用パラメータ
-└── README.md              # このファイル
+├── README.md
+└── bicep/
+    ├── main.bicep              # メインテンプレート
+    ├── main.json               # コンパイル済みARMテンプレート
+    ├── parameters.json         # 開発環境用パラメータ
+    └── parameters.prod.json    # 本番環境用パラメータ
 ```
 
 ## テンプレートの改善点
