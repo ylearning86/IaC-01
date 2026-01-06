@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.38.33.27573",
-      "templateHash": "13904619134158907198"
+      "templateHash": "14951411377269469001"
     },
     "description": "Azure Infrastructure as Code テンプレート - VM, Storage, Network, Bastion",
     "author": "Infrastructure Team"
@@ -18,44 +18,63 @@
         "description": "Azureリージョン (例: japaneast, eastus)"
       }
     },
-    "projectName": {
-      "type": "string",
-      "defaultValue": "handson",
-      "metadata": {
-        "description": "プロジェクト名 (リソース名の接頭辞)",
-        "hidden": true
-      },
-      "minLength": 3,
-      "maxLength": 24
-    },
     "userNumber": {
       "type": "string",
       "defaultValue": "001",
+      "allowedValues": [
+        "001",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "007",
+        "008",
+        "009",
+        "010",
+        "011",
+        "012",
+        "013",
+        "014",
+        "015",
+        "016",
+        "017",
+        "018",
+        "019",
+        "020",
+        "021",
+        "022",
+        "023",
+        "024",
+        "025",
+        "026",
+        "027",
+        "028",
+        "029",
+        "030",
+        "031",
+        "032",
+        "033",
+        "034",
+        "035",
+        "036",
+        "037",
+        "038",
+        "039",
+        "040",
+        "041",
+        "042",
+        "043",
+        "044",
+        "045",
+        "046",
+        "047",
+        "048",
+        "049",
+        "050"
+      ],
       "metadata": {
         "description": "ユーザー番号 (3桁: 001-050)"
-      },
-      "allowedValues": [
-        "001", "002", "003", "004", "005", "006", "007", "008", "009", "010",
-        "011", "012", "013", "014", "015", "016", "017", "018", "019", "020",
-        "021", "022", "023", "024", "025", "026", "027", "028", "029", "030",
-        "031", "032", "033", "034", "035", "036", "037", "038", "039", "040",
-        "041", "042", "043", "044", "045", "046", "047", "048", "049", "050"
-      ]
-    },
-    "environment": {
-      "type": "string",
-      "defaultValue": "dev",
-      "metadata": {
-        "description": "環境名 (dev/prod など)",
-        "hidden": true
-      }
-    },
-    "vmName": {
-      "type": "string",
-      "defaultValue": "[format('vm-{0}', parameters('userNumber'))]",
-      "metadata": {
-        "description": "仮想マシン名",
-        "hidden": true
       }
     },
     "vmSize": {
@@ -65,108 +84,10 @@
         "description": "仮想マシンのサイズ (例: Standard_D2s_v3, Standard_D4s_v3)"
       }
     },
-    "vmAdminUsername": {
-      "type": "string",
-      "defaultValue": "azureuser",
-      "metadata": {
-        "description": "VM管理者ユーザー名",
-        "hidden": true
-      }
-    },
     "vmAdminPassword": {
       "type": "securestring",
       "metadata": {
         "description": "VM管理者パスワード (8文字以上、大文字・小文字・数字・特殊文字を含む)"
-      }
-    },
-    "vmOsVersion": {
-      "type": "string",
-      "defaultValue": "2025-datacenter-azure-edition",
-      "metadata": {
-        "description": "Windows OSバージョン",
-        "hidden": true
-      }
-    },
-    "storageName": {
-      "type": "string",
-      "defaultValue": "[format('sahandson{0}', parameters('userNumber'))]",
-      "metadata": {
-        "description": "ストレージアカウント名",
-        "hidden": true
-      },
-      "minLength": 3,
-      "maxLength": 24
-    },
-    "storageSkuName": {
-      "type": "string",
-      "defaultValue": "Standard_RAGRS",
-      "metadata": {
-        "description": "ストレージアカウントのSKU (Standard_RAGRS, Standard_GRS など)",
-        "hidden": true
-      }
-    },
-    "storagePublicNetworkAccess": {
-      "type": "string",
-      "defaultValue": "Disabled",
-      "metadata": {
-        "description": "ストレージの公開ネットワークアクセス (Disabled/Enabled)",
-        "hidden": true
-      }
-    },
-    "storageDefaultAction": {
-      "type": "string",
-      "defaultValue": "Deny",
-      "metadata": {
-        "description": "ネットワークルールのデフォルトアクション (Deny/Allow)",
-        "hidden": true
-      }
-    },
-    "vnetName": {
-      "type": "string",
-      "defaultValue": "vnet-handson",
-      "metadata": {
-        "description": "仮想ネットワーク名",
-        "hidden": true
-      }
-    },
-    "vnetAddressSpace": {
-      "type": "string",
-      "defaultValue": "10.0.0.0/16",
-      "metadata": {
-        "description": "仮想ネットワークのアドレス空間 (CIDR表記)",
-        "hidden": true
-      }
-    },
-    "vmSubnetName": {
-      "type": "string",
-      "defaultValue": "vm-subnet",
-      "metadata": {
-        "description": "VM サブネット名",
-        "hidden": true
-      }
-    },
-    "vmSubnetAddressPrefix": {
-      "type": "string",
-      "defaultValue": "10.0.1.0/24",
-      "metadata": {
-        "description": "VM サブネットのアドレス範囲 (CIDR表記)",
-        "hidden": true
-      }
-    },
-    "peSubnetName": {
-      "type": "string",
-      "defaultValue": "pe-subnet",
-      "metadata": {
-        "description": "Private Endpoint サブネット名",
-        "hidden": true
-      }
-    },
-    "peSubnetAddressPrefix": {
-      "type": "string",
-      "defaultValue": "10.0.2.0/24",
-      "metadata": {
-        "description": "Private Endpoint サブネットのアドレス範囲 (CIDR表記)",
-        "hidden": true
       }
     },
     "enableBastion": {
@@ -175,74 +96,34 @@
       "metadata": {
         "description": "Azure Bastion (Developer SKU) をデプロイするかどうか"
       }
-    },
-    "bastionSkuName": {
-      "type": "string",
-      "defaultValue": "Developer",
-      "metadata": {
-        "description": "Azure Bastion のSKU (Developer/Standard)",
-        "hidden": true
-      }
-    },
-    "bastionScaleUnits": {
-      "type": "int",
-      "defaultValue": 2,
-      "metadata": {
-        "description": "Azure Bastion のスケールユニット数",
-        "hidden": true
-      }
-    },
-    "tagEnvironment": {
-      "type": "string",
-      "defaultValue": "[parameters('environment')]",
-      "metadata": {
-        "description": "環境タグ (dev/staging/prod など)",
-        "hidden": true
-      }
-    },
-    "tagProject": {
-      "type": "string",
-      "defaultValue": "[parameters('projectName')]",
-      "metadata": {
-        "description": "プロジェクトタグ",
-        "hidden": true
-      }
-    },
-    "tagCostCenter": {
-      "type": "string",
-      "defaultValue": "IT",
-      "metadata": {
-        "description": "コストセンタータグ",
-        "hidden": true
-      }
-    },
-    "createdDate": {
-      "type": "string",
-      "defaultValue": "[utcNow('u')]",
-      "metadata": {
-        "description": "リソース作成日時",
-        "hidden": true
-      }
     }
   },
   "variables": {
-    "commonTags": {
-      "environment": "[parameters('tagEnvironment')]",
-      "project": "[parameters('tagProject')]",
-      "costCenter": "[parameters('tagCostCenter')]",
-      "createdDate": "[parameters('createdDate')]",
-      "managedBy": "Bicep"
-    },
+    "vmName": "[format('vm-{0}', parameters('userNumber'))]",
+    "vmAdminUsername": "azureuser",
+    "vmOsVersion": "2025-datacenter-azure-edition",
+    "storageName": "[format('sahandson{0}', parameters('userNumber'))]",
+    "storageSkuName": "Standard_RAGRS",
+    "storagePublicNetworkAccess": "Disabled",
+    "storageDefaultAction": "Deny",
+    "vnetName": "vnet-handson",
+    "vnetAddressSpace": "10.0.0.0/16",
+    "vmSubnetName": "vm-subnet",
+    "vmSubnetAddressPrefix": "10.0.1.0/24",
+    "peSubnetName": "pe-subnet",
+    "peSubnetAddressPrefix": "10.0.2.0/24",
+    "bastionSkuName": "Developer",
+    "bastionScaleUnits": 2,
     "resourceNaming": {
-      "vm": "[parameters('vmName')]",
+      "vm": "[variables('vmName')]",
       "nic": "[format('vm-{0}-nic', parameters('userNumber'))]",
-      "nsgVm": "[format('{0}-vm-subnet-nsg-{1}', parameters('vnetName'), parameters('location'))]",
-      "nsgPe": "[format('{0}-pe-subnet-nsg-{1}', parameters('vnetName'), parameters('location'))]",
+      "nsgVm": "[format('{0}-vm-subnet-nsg-{1}', variables('vnetName'), parameters('location'))]",
+      "nsgPe": "[format('{0}-pe-subnet-nsg-{1}', variables('vnetName'), parameters('location'))]",
       "nsgVmLegacy": "[format('vm-{0}-nsg', parameters('userNumber'))]",
-      "vnet": "[parameters('vnetName')]",
+      "vnet": "[variables('vnetName')]",
       "pe": "pe-handson-blob",
       "peNic": "pe-handson-blob-nic",
-      "bastion": "[format('{0}-bastion', parameters('vnetName'))]",
+      "bastion": "[format('{0}-bastion', variables('vnetName'))]",
       "privateDnsZone": "privatelink.blob.core.windows.net"
     }
   },
@@ -252,7 +133,6 @@
       "apiVersion": "2024-07-01",
       "name": "[variables('resourceNaming').nsgVmLegacy]",
       "location": "[parameters('location')]",
-      "tags": "[variables('commonTags')]",
       "properties": {
         "securityRules": [
           {
@@ -276,7 +156,6 @@
       "apiVersion": "2024-07-01",
       "name": "[variables('resourceNaming').nsgPe]",
       "location": "[parameters('location')]",
-      "tags": "[variables('commonTags')]",
       "properties": {
         "securityRules": []
       }
@@ -286,7 +165,6 @@
       "apiVersion": "2024-07-01",
       "name": "[variables('resourceNaming').nsgVm]",
       "location": "[parameters('location')]",
-      "tags": "[variables('commonTags')]",
       "properties": {
         "securityRules": []
       }
@@ -296,24 +174,22 @@
       "apiVersion": "2024-06-01",
       "name": "[variables('resourceNaming').privateDnsZone]",
       "location": "global",
-      "tags": "[variables('commonTags')]",
       "properties": {}
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2025-01-01",
-      "name": "[parameters('storageName')]",
+      "name": "[variables('storageName')]",
       "location": "[parameters('location')]",
-      "tags": "[variables('commonTags')]",
       "sku": {
-        "name": "[parameters('storageSkuName')]",
-        "tier": "[split(parameters('storageSkuName'), '_')[0]]"
+        "name": "[variables('storageSkuName')]",
+        "tier": "[split(variables('storageSkuName'), '_')[0]]"
       },
       "kind": "StorageV2",
       "properties": {
         "dnsEndpointType": "Standard",
         "defaultToOAuthAuthentication": false,
-        "publicNetworkAccess": "[parameters('storagePublicNetworkAccess')]",
+        "publicNetworkAccess": "[variables('storagePublicNetworkAccess')]",
         "allowCrossTenantReplication": false,
         "minimumTlsVersion": "TLS1_2",
         "allowBlobPublicAccess": false,
@@ -324,7 +200,7 @@
           "bypass": "AzureServices",
           "virtualNetworkRules": [],
           "ipRules": [],
-          "defaultAction": "[parameters('storageDefaultAction')]"
+          "defaultAction": "[variables('storageDefaultAction')]"
         },
         "supportsHttpsTrafficOnly": true,
         "encryption": {
@@ -349,7 +225,6 @@
       "apiVersion": "2024-11-01",
       "name": "[variables('resourceNaming').vm]",
       "location": "[parameters('location')]",
-      "tags": "[variables('commonTags')]",
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
@@ -361,7 +236,7 @@
           "imageReference": {
             "publisher": "MicrosoftWindowsServer",
             "offer": "WindowsServer",
-            "sku": "[parameters('vmOsVersion')]",
+            "sku": "[variables('vmOsVersion')]",
             "version": "latest"
           },
           "osDisk": {
@@ -380,7 +255,7 @@
         },
         "osProfile": {
           "computerName": "[variables('resourceNaming').vm]",
-          "adminUsername": "[parameters('vmAdminUsername')]",
+          "adminUsername": "[variables('vmAdminUsername')]",
           "adminPassword": "[parameters('vmAdminPassword')]",
           "windowsConfiguration": {
             "provisionVMAgent": true,
@@ -431,12 +306,11 @@
       "apiVersion": "2024-07-01",
       "name": "[variables('resourceNaming').bastion]",
       "location": "[parameters('location')]",
-      "tags": "[variables('commonTags')]",
       "sku": {
-        "name": "[parameters('bastionSkuName')]"
+        "name": "[variables('bastionSkuName')]"
       },
       "properties": {
-        "scaleUnits": "[parameters('bastionScaleUnits')]",
+        "scaleUnits": "[variables('bastionScaleUnits')]",
         "virtualNetwork": {
           "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('resourceNaming').vnet)]"
         },
@@ -467,7 +341,7 @@
     {
       "type": "Microsoft.Network/privateDnsZones/A",
       "apiVersion": "2024-06-01",
-      "name": "[format('{0}/{1}', variables('resourceNaming').privateDnsZone, parameters('storageName'))]",
+      "name": "[format('{0}/{1}', variables('resourceNaming').privateDnsZone, variables('storageName'))]",
       "properties": {
         "metadata": {
           "creator": "[format('created by private endpoint {0} with resource guid {1}', variables('resourceNaming').pe, resourceId('Microsoft.Network/privateEndpoints', variables('resourceNaming').pe))]"
@@ -480,14 +354,14 @@
         ]
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/privateDnsZones', variables('resourceNaming').privateDnsZone)]",
-        "[resourceId('Microsoft.Network/privateEndpoints', variables('resourceNaming').pe)]"
+        "[resourceId('Microsoft.Network/privateEndpoints', variables('resourceNaming').pe)]",
+        "[resourceId('Microsoft.Network/privateDnsZones', variables('resourceNaming').privateDnsZone)]"
       ]
     },
     {
       "type": "Microsoft.Network/privateDnsZones/SOA",
       "apiVersion": "2024-06-01",
-      "name": "[format('{0}/{1}', variables('resourceNaming').privateDnsZone, '@')]",
+      "name": "[format('{0}/@', variables('resourceNaming').privateDnsZone)]",
       "properties": {
         "ttl": 3600,
         "soaRecord": {
@@ -507,10 +381,10 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices",
       "apiVersion": "2025-01-01",
-      "name": "[format('{0}/{1}', parameters('storageName'), 'default')]",
+      "name": "[format('{0}/{1}', variables('storageName'), 'default')]",
       "sku": {
-        "name": "[parameters('storageSkuName')]",
-        "tier": "[split(parameters('storageSkuName'), '_')[0]]"
+        "name": "[variables('storageSkuName')]",
+        "tier": "[split(variables('storageSkuName'), '_')[0]]"
       },
       "properties": {
         "containerDeleteRetentionPolicy": {
@@ -527,16 +401,16 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
       ]
     },
     {
       "type": "Microsoft.Storage/storageAccounts/fileServices",
       "apiVersion": "2025-01-01",
-      "name": "[format('{0}/{1}', parameters('storageName'), 'default')]",
+      "name": "[format('{0}/{1}', variables('storageName'), 'default')]",
       "sku": {
-        "name": "[parameters('storageSkuName')]",
-        "tier": "[split(parameters('storageSkuName'), '_')[0]]"
+        "name": "[variables('storageSkuName')]",
+        "tier": "[split(variables('storageSkuName'), '_')[0]]"
       },
       "properties": {
         "protocolSettings": {
@@ -551,13 +425,13 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
       ]
     },
     {
       "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
       "apiVersion": "2025-01-01",
-      "name": "[format('{0}/{1}', parameters('storageName'), format('{0}.e9af9228-99fe-4a66-aa9e-7b7e0657bd72', parameters('storageName')))]",
+      "name": "[format('{0}/{1}', variables('storageName'), format('{0}.e9af9228-99fe-4a66-aa9e-7b7e0657bd72', variables('storageName')))]",
       "properties": {
         "privateEndpoint": {},
         "privateLinkServiceConnectionState": {
@@ -567,33 +441,33 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
       ]
     },
     {
       "type": "Microsoft.Storage/storageAccounts/queueServices",
       "apiVersion": "2025-01-01",
-      "name": "[format('{0}/{1}', parameters('storageName'), 'default')]",
+      "name": "[format('{0}/{1}', variables('storageName'), 'default')]",
       "properties": {
         "cors": {
           "corsRules": []
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
       ]
     },
     {
       "type": "Microsoft.Storage/storageAccounts/tableServices",
       "apiVersion": "2025-01-01",
-      "name": "[format('{0}/{1}', parameters('storageName'), 'default')]",
+      "name": "[format('{0}/{1}', variables('storageName'), 'default')]",
       "properties": {
         "cors": {
           "corsRules": []
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
       ]
     },
     {
@@ -601,7 +475,6 @@
       "apiVersion": "2024-07-01",
       "name": "[variables('resourceNaming').nic]",
       "location": "[parameters('location')]",
-      "tags": "[variables('commonTags')]",
       "kind": "Regular",
       "properties": {
         "ipConfigurations": [
@@ -611,7 +484,7 @@
               "privateIPAddress": "10.0.2.4",
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
-                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', variables('resourceNaming').vnet, parameters('vmSubnetName')), '/')[0], split(format('{0}/{1}', variables('resourceNaming').vnet, parameters('vmSubnetName')), '/')[1])]"
+                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', variables('resourceNaming').vnet, variables('vmSubnetName')), '/')[0], split(format('{0}/{1}', variables('resourceNaming').vnet, variables('vmSubnetName')), '/')[1])]"
               },
               "primary": true,
               "privateIPAddressVersion": "IPv4"
@@ -633,7 +506,7 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.Network/networkSecurityGroups', variables('resourceNaming').nsgVmLegacy)]",
-        "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', variables('resourceNaming').vnet, parameters('vmSubnetName')), '/')[0], split(format('{0}/{1}', variables('resourceNaming').vnet, parameters('vmSubnetName')), '/')[1])]"
+        "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', variables('resourceNaming').vnet, variables('vmSubnetName')), '/')[0], split(format('{0}/{1}', variables('resourceNaming').vnet, variables('vmSubnetName')), '/')[1])]"
       ]
     },
     {
@@ -658,13 +531,12 @@
       "apiVersion": "2024-07-01",
       "name": "[variables('resourceNaming').pe]",
       "location": "[parameters('location')]",
-      "tags": "[variables('commonTags')]",
       "properties": {
         "privateLinkServiceConnections": [
           {
             "name": "[variables('resourceNaming').pe]",
             "properties": {
-              "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]",
+              "privateLinkServiceId": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
               "groupIds": [
                 "blob"
               ],
@@ -679,14 +551,14 @@
         "manualPrivateLinkServiceConnections": [],
         "customNetworkInterfaceName": "[variables('resourceNaming').peNic]",
         "subnet": {
-          "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', variables('resourceNaming').vnet, parameters('peSubnetName')), '/')[0], split(format('{0}/{1}', variables('resourceNaming').vnet, parameters('peSubnetName')), '/')[1])]"
+          "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', variables('resourceNaming').vnet, variables('peSubnetName')), '/')[0], split(format('{0}/{1}', variables('resourceNaming').vnet, variables('peSubnetName')), '/')[1])]"
         },
         "ipConfigurations": [],
         "customDnsConfigs": []
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]",
-        "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', variables('resourceNaming').vnet, parameters('peSubnetName')), '/')[0], split(format('{0}/{1}', variables('resourceNaming').vnet, parameters('peSubnetName')), '/')[1])]"
+        "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', variables('resourceNaming').vnet, variables('peSubnetName')), '/')[0], split(format('{0}/{1}', variables('resourceNaming').vnet, variables('peSubnetName')), '/')[1])]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
       ]
     },
     {
@@ -704,8 +576,8 @@
         ]
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/privateDnsZones', variables('resourceNaming').privateDnsZone)]",
-        "[resourceId('Microsoft.Network/privateEndpoints', variables('resourceNaming').pe)]"
+        "[resourceId('Microsoft.Network/privateEndpoints', variables('resourceNaming').pe)]",
+        "[resourceId('Microsoft.Network/privateDnsZones', variables('resourceNaming').privateDnsZone)]"
       ]
     },
     {
@@ -713,11 +585,10 @@
       "apiVersion": "2024-07-01",
       "name": "[variables('resourceNaming').vnet]",
       "location": "[parameters('location')]",
-      "tags": "[variables('commonTags')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[parameters('vnetAddressSpace')]"
+            "[variables('vnetAddressSpace')]"
           ]
         },
         "encryption": {
@@ -730,9 +601,9 @@
         },
         "subnets": [
           {
-            "name": "[parameters('vmSubnetName')]",
+            "name": "[variables('vmSubnetName')]",
             "properties": {
-              "addressPrefix": "[parameters('vmSubnetAddressPrefix')]",
+              "addressPrefix": "[variables('vmSubnetAddressPrefix')]",
               "networkSecurityGroup": {
                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('resourceNaming').nsgVm)]"
               },
@@ -744,9 +615,9 @@
             }
           },
           {
-            "name": "[parameters('peSubnetName')]",
+            "name": "[variables('peSubnetName')]",
             "properties": {
-              "addressPrefix": "[parameters('peSubnetAddressPrefix')]",
+              "addressPrefix": "[variables('peSubnetAddressPrefix')]",
               "networkSecurityGroup": {
                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('resourceNaming').nsgPe)]"
               },
@@ -769,9 +640,9 @@
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2024-07-01",
-      "name": "[format('{0}/{1}', variables('resourceNaming').vnet, parameters('peSubnetName'))]",
+      "name": "[format('{0}/{1}', variables('resourceNaming').vnet, variables('peSubnetName'))]",
       "properties": {
-        "addressPrefix": "[parameters('peSubnetAddressPrefix')]",
+        "addressPrefix": "[variables('peSubnetAddressPrefix')]",
         "networkSecurityGroup": {
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('resourceNaming').nsgPe)]"
         },
@@ -789,9 +660,9 @@
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2024-07-01",
-      "name": "[format('{0}/{1}', variables('resourceNaming').vnet, parameters('vmSubnetName'))]",
+      "name": "[format('{0}/{1}', variables('resourceNaming').vnet, variables('vmSubnetName'))]",
       "properties": {
-        "addressPrefix": "[parameters('vmSubnetAddressPrefix')]",
+        "addressPrefix": "[variables('vmSubnetAddressPrefix')]",
         "networkSecurityGroup": {
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('resourceNaming').nsgVm)]"
         },
@@ -809,7 +680,7 @@
     {
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2025-01-01",
-      "name": "[format('{0}/{1}/{2}', parameters('storageName'), 'default', 'container')]",
+      "name": "[format('{0}/{1}/{2}', variables('storageName'), 'default', 'container')]",
       "properties": {
         "immutableStorageWithVersioning": {
           "enabled": false
@@ -819,8 +690,8 @@
         "publicAccess": "None"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageName'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageName'), 'default')]"
       ]
     }
   ],
@@ -843,15 +714,15 @@
     },
     "storageAccountId": {
       "type": "string",
-      "value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageName'))]"
+      "value": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
     },
     "storageAccountName": {
       "type": "string",
-      "value": "[parameters('storageName')]"
+      "value": "[variables('storageName')]"
     },
     "storageAccountPrimaryBlobEndpoint": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageName')), '2025-01-01').primaryBlobEndpoint]"
+      "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', variables('storageName')), '2025-01-01').primaryBlobEndpoint]"
     },
     "nicId": {
       "type": "string",

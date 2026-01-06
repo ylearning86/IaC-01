@@ -1,166 +1,90 @@
-// ============================================
-// メタデータ
-// ============================================
 metadata description = 'Azure Infrastructure as Code テンプレート - VM, Storage, Network, Bastion'
 metadata author = 'Infrastructure Team'
 
-// ============================================
-// パラメータ
-// ============================================
-
-// 基本設定
-@metadata({
-  description: 'Azureリージョン (例: japaneast, eastus)'
-})
+@description('Azureリージョン (例: japaneast, eastus)')
 param location string = resourceGroup().location
 
-@minLength(3)
-@maxLength(24)
-@metadata({
-  description: 'プロジェクト名 (リソース名の接頭辞)'
-})
-param projectName string = 'handson'
-
-@minLength(3)
-@maxLength(3)
-@metadata({
-  description: 'ユーザー番号 (3桁: 001-050)'
-})
+@description('ユーザー番号 (3桁: 001-050)')
+@allowed([
+  '001'
+  '002'
+  '003'
+  '004'
+  '005'
+  '006'
+  '007'
+  '008'
+  '009'
+  '010'
+  '011'
+  '012'
+  '013'
+  '014'
+  '015'
+  '016'
+  '017'
+  '018'
+  '019'
+  '020'
+  '021'
+  '022'
+  '023'
+  '024'
+  '025'
+  '026'
+  '027'
+  '028'
+  '029'
+  '030'
+  '031'
+  '032'
+  '033'
+  '034'
+  '035'
+  '036'
+  '037'
+  '038'
+  '039'
+  '040'
+  '041'
+  '042'
+  '043'
+  '044'
+  '045'
+  '046'
+  '047'
+  '048'
+  '049'
+  '050'
+])
 param userNumber string = '001'
 
-@metadata({
-  description: '環境名 (dev/prod など)'
-})
-param environment string = 'dev'
-
-// VM設定
-@metadata({
-  description: '仮想マシン名'
-})
-param vmName string = 'vm-${userNumber}'
-
-@metadata({
-  description: '仮想マシンのサイズ (例: Standard_D2s_v3, Standard_D4s_v3)'
-})
+@description('仮想マシンのサイズ (例: Standard_D2s_v3, Standard_D4s_v3)')
 param vmSize string = 'Standard_D2s_v3'
 
-@metadata({
-  description: 'VM管理者ユーザー名'
-})
-param vmAdminUsername string = 'azureuser'
-
-@metadata({
-  description: 'VM管理者パスワード (8文字以上、大文字・小文字・数字・特殊文字を含む)'
-})
+@description('VM管理者パスワード (8文字以上、大文字・小文字・数字・特殊文字を含む)')
 @secure()
 param vmAdminPassword string
 
-@metadata({
-  description: 'Windows OSバージョン'
-})
-param vmOsVersion string = '2025-datacenter-azure-edition'
-
-// ストレージ設定
-@minLength(3)
-@maxLength(24)
-@metadata({
-  description: 'ストレージアカウント名'
-})
-param storageName string = 'sahandson${userNumber}'
-
-@metadata({
-  description: 'ストレージアカウントのSKU (Standard_RAGRS, Standard_GRS など)'
-})
-param storageSkuName string = 'Standard_RAGRS'
-
-@metadata({
-  description: 'ストレージの公開ネットワークアクセス (Disabled/Enabled)'
-})
-param storagePublicNetworkAccess string = 'Disabled'
-
-@metadata({
-  description: 'ネットワークルールのデフォルトアクション (Deny/Allow)'
-})
-param storageDefaultAction string = 'Deny'
-
-// ネットワーク設定
-@metadata({
-  description: '仮想ネットワーク名'
-})
-param vnetName string = 'vnet-handson'
-
-@metadata({
-  description: '仮想ネットワークのアドレス空間 (CIDR表記)'
-})
-param vnetAddressSpace string = '10.0.0.0/16'
-
-@metadata({
-  description: 'VM サブネット名'
-})
-param vmSubnetName string = 'vm-subnet'
-
-@metadata({
-  description: 'VM サブネットのアドレス範囲 (CIDR表記)'
-})
-param vmSubnetAddressPrefix string = '10.0.1.0/24'
-
-@metadata({
-  description: 'Private Endpoint サブネット名'
-})
-param peSubnetName string = 'pe-subnet'
-
-@metadata({
-  description: 'Private Endpoint サブネットのアドレス範囲 (CIDR表記)'
-})
-param peSubnetAddressPrefix string = '10.0.2.0/24'
-
-// Bastion設定
-@metadata({
-  description: 'Azure Bastion (Developer SKU) をデプロイするかどうか'
-})
+@description('Azure Bastion (Developer SKU) をデプロイするかどうか')
 param enableBastion bool = true
 
-@metadata({
-  description: 'Azure Bastion のSKU (Developer/Standard)'
-})
-param bastionSkuName string = 'Developer'
-
-@metadata({
-  description: 'Azure Bastion のスケールユニット数'
-})
-param bastionScaleUnits int = 2
-
-// タグ
-@metadata({
-  description: '環境タグ (dev/staging/prod など)'
-})
-param tagEnvironment string = environment
-
-@metadata({
-  description: 'プロジェクトタグ'
-})
-param tagProject string = projectName
-
-@metadata({
-  description: 'コストセンタータグ'
-})
-param tagCostCenter string = 'IT'
-
-@metadata({
-  description: 'リソース作成日時'
-})
-param createdDate string = utcNow('u')
-
-// ============================================
-// ローカル変数
-// ============================================
-var commonTags = {
-  environment: tagEnvironment
-  project: tagProject
-  costCenter: tagCostCenter
-  createdDate: createdDate
-  managedBy: 'Bicep'
-}
+// 固定値（ポータルに表示しない）
+var vmName = 'vm-${userNumber}'
+var vmAdminUsername = 'azureuser'
+var vmOsVersion = '2025-datacenter-azure-edition'
+var storageName = 'sahandson${userNumber}'
+var storageSkuName = 'Standard_RAGRS'
+var storagePublicNetworkAccess = 'Disabled'
+var storageDefaultAction = 'Deny'
+var vnetName = 'vnet-handson'
+var vnetAddressSpace = '10.0.0.0/16'
+var vmSubnetName = 'vm-subnet'
+var vmSubnetAddressPrefix = '10.0.1.0/24'
+var peSubnetName = 'pe-subnet'
+var peSubnetAddressPrefix = '10.0.2.0/24'
+var bastionSkuName = 'Developer'
+var bastionScaleUnits = 2
 
 var resourceNaming = {
   vm: vmName
@@ -175,13 +99,10 @@ var resourceNaming = {
   privateDnsZone: 'privatelink.blob.core.windows.net'
 }
 
-// ============================================
-// ネットワークセキュリティグループ
-// ============================================
-resource networkSecurityGroups_vm_050_nsg_name_resource 'Microsoft.Network/networkSecurityGroups@2024-07-01' = {
+
+resource resourceNaming_nsgVmLegacy 'Microsoft.Network/networkSecurityGroups@2024-07-01' = {
   name: resourceNaming.nsgVmLegacy
   location: location
-  tags: commonTags
   properties: {
     securityRules: [
       {
@@ -201,41 +122,31 @@ resource networkSecurityGroups_vm_050_nsg_name_resource 'Microsoft.Network/netwo
   }
 }
 
-resource networkSecurityGroups_vnet_handson_pe_subnet_nsg_japaneast_name_resource 'Microsoft.Network/networkSecurityGroups@2024-07-01' = {
+resource resourceNaming_nsgPe 'Microsoft.Network/networkSecurityGroups@2024-07-01' = {
   name: resourceNaming.nsgPe
   location: location
-  tags: commonTags
   properties: {
     securityRules: []
   }
 }
 
-resource networkSecurityGroups_vnet_handson_vm_subnet_nsg_japaneast_name_resource 'Microsoft.Network/networkSecurityGroups@2024-07-01' = {
+resource resourceNaming_nsgVm 'Microsoft.Network/networkSecurityGroups@2024-07-01' = {
   name: resourceNaming.nsgVm
   location: location
-  tags: commonTags
   properties: {
     securityRules: []
   }
 }
 
-// ============================================
-// プライベート DNS ゾーン
-// ============================================
-resource privateDnsZones_privatelink_blob_core_windows_net_name_resource 'Microsoft.Network/privateDnsZones@2024-06-01' = {
+resource resourceNaming_privateDnsZone 'Microsoft.Network/privateDnsZones@2024-06-01' = {
   name: resourceNaming.privateDnsZone
   location: 'global'
-  tags: commonTags
   properties: {}
 }
 
-// ============================================
-// ストレージアカウント
-// ============================================
-resource storageAccounts_sahandson001_name_resource 'Microsoft.Storage/storageAccounts@2025-01-01' = {
+resource storage 'Microsoft.Storage/storageAccounts@2025-01-01' = {
   name: storageName
   location: location
-  tags: commonTags
   sku: {
     name: storageSkuName
     tier: split(storageSkuName, '_')[0]
@@ -276,13 +187,9 @@ resource storageAccounts_sahandson001_name_resource 'Microsoft.Storage/storageAc
   }
 }
 
-// ============================================
-// 仮想マシン
-// ============================================
-resource virtualMachines_vm_050_name_resource 'Microsoft.Compute/virtualMachines@2024-11-01' = {
+resource resourceNaming_vm 'Microsoft.Compute/virtualMachines@2024-11-01' = {
   name: resourceNaming.vm
   location: location
-  tags: commonTags
   properties: {
     hardwareProfile: {
       vmSize: vmSize
@@ -341,7 +248,7 @@ resource virtualMachines_vm_050_name_resource 'Microsoft.Compute/virtualMachines
     networkProfile: {
       networkInterfaces: [
         {
-          id: networkInterfaces_vm_050170_name_resource.id
+          id: resourceNaming_nic.id
           properties: {
             deleteOption: 'Detach'
           }
@@ -356,29 +263,22 @@ resource virtualMachines_vm_050_name_resource 'Microsoft.Compute/virtualMachines
   }
 }
 
-// ============================================
-// Bastion ホスト
-// ============================================
-resource bastionHosts_vnet_handson_bastion_name_resource 'Microsoft.Network/bastionHosts@2024-07-01' = if (enableBastion) {
+resource resourceNaming_bastion 'Microsoft.Network/bastionHosts@2024-07-01' = if (enableBastion) {
   name: resourceNaming.bastion
   location: location
-  tags: commonTags
   sku: {
     name: bastionSkuName
   }
   properties: {
     scaleUnits: bastionScaleUnits
     virtualNetwork: {
-      id: virtualNetworks_vnet_handson_name_resource.id
+      id: resourceNaming_vnet.id
     }
     ipConfigurations: []
   }
 }
 
-// ============================================
-// セキュリティルール
-// ============================================
-resource networkSecurityGroups_vm_050_nsg_name_DenyInternet 'Microsoft.Network/networkSecurityGroups/securityRules@2024-07-01' = {
+resource resourceNaming_nsgVmLegacy_DenyInternet 'Microsoft.Network/networkSecurityGroups/securityRules@2024-07-01' = {
   name: '${resourceNaming.nsgVmLegacy}/DenyInternet'
   properties: {
     protocol: '*'
@@ -391,19 +291,15 @@ resource networkSecurityGroups_vm_050_nsg_name_DenyInternet 'Microsoft.Network/n
     direction: 'Outbound'
   }
   dependsOn: [
-    networkSecurityGroups_vm_050_nsg_name_resource
+    resourceNaming_nsgVmLegacy
   ]
 }
 
-// ============================================
-// Private DNS Zone レコード
-// ============================================
-resource privateDnsZones_privatelink_blob_core_windows_net_name_sahandson001 'Microsoft.Network/privateDnsZones/A@2024-06-01' = {
-  parent: privateDnsZones_privatelink_blob_core_windows_net_name_resource
-  name: storageName
+resource resourceNaming_privateDnsZone_storage 'Microsoft.Network/privateDnsZones/A@2024-06-01' = {
+  name: '${resourceNaming.privateDnsZone}/${storageName}'
   properties: {
     metadata: {
-      creator: 'created by private endpoint ${resourceNaming.pe} with resource guid ${privateEndpoints_pe_handson_blob_name_resource.id}'
+      creator: 'created by private endpoint ${resourceNaming.pe} with resource guid ${resourceNaming_pe.id}'
     }
     ttl: 10
     aRecords: [
@@ -412,11 +308,13 @@ resource privateDnsZones_privatelink_blob_core_windows_net_name_sahandson001 'Mi
       }
     ]
   }
+  dependsOn: [
+    resourceNaming_privateDnsZone
+  ]
 }
 
-resource Microsoft_Network_privateDnsZones_SOA_privateDnsZones_privatelink_blob_core_windows_net_name 'Microsoft.Network/privateDnsZones/SOA@2024-06-01' = {
-  parent: privateDnsZones_privatelink_blob_core_windows_net_name_resource
-  name: '@'
+resource Microsoft_Network_privateDnsZones_SOA_resourceNaming_privateDnsZone 'Microsoft.Network/privateDnsZones/SOA@2024-06-01' = {
+  name: '${resourceNaming.privateDnsZone}/@'
   properties: {
     ttl: 3600
     soaRecord: {
@@ -429,13 +327,13 @@ resource Microsoft_Network_privateDnsZones_SOA_privateDnsZones_privatelink_blob_
       serialNumber: 1
     }
   }
+  dependsOn: [
+    resourceNaming_privateDnsZone
+  ]
 }
 
-// ============================================
-// ストレージサービス設定
-// ============================================
-resource storageAccounts_sahandson001_name_default 'Microsoft.Storage/storageAccounts/blobServices@2025-01-01' = {
-  parent: storageAccounts_sahandson001_name_resource
+resource storageName_default 'Microsoft.Storage/storageAccounts/blobServices@2025-01-01' = {
+  parent: storage
   name: 'default'
   sku: {
     name: storageSkuName
@@ -457,8 +355,8 @@ resource storageAccounts_sahandson001_name_default 'Microsoft.Storage/storageAcc
   }
 }
 
-resource Microsoft_Storage_storageAccounts_fileServices_storageAccounts_sahandson001_name_default 'Microsoft.Storage/storageAccounts/fileServices@2025-01-01' = {
-  parent: storageAccounts_sahandson001_name_resource
+resource Microsoft_Storage_storageAccounts_fileServices_storageName_default 'Microsoft.Storage/storageAccounts/fileServices@2025-01-01' = {
+  parent: storage
   name: 'default'
   sku: {
     name: storageSkuName
@@ -478,8 +376,8 @@ resource Microsoft_Storage_storageAccounts_fileServices_storageAccounts_sahandso
   }
 }
 
-resource storageAccounts_sahandson001_name_storageAccounts_sahandson001_name_e9af9228_99fe_4a66_aa9e_7b7e0657bd72 'Microsoft.Storage/storageAccounts/privateEndpointConnections@2025-01-01' = {
-  parent: storageAccounts_sahandson001_name_resource
+resource storageName_storageName_e9af9228_99fe_4a66_aa9e_7b7e0657bd72 'Microsoft.Storage/storageAccounts/privateEndpointConnections@2025-01-01' = {
+  parent: storage
   name: '${storageName}.e9af9228-99fe-4a66-aa9e-7b7e0657bd72'
   properties: {
     privateEndpoint: {}
@@ -491,8 +389,8 @@ resource storageAccounts_sahandson001_name_storageAccounts_sahandson001_name_e9a
   }
 }
 
-resource Microsoft_Storage_storageAccounts_queueServices_storageAccounts_sahandson001_name_default 'Microsoft.Storage/storageAccounts/queueServices@2025-01-01' = {
-  parent: storageAccounts_sahandson001_name_resource
+resource Microsoft_Storage_storageAccounts_queueServices_storageName_default 'Microsoft.Storage/storageAccounts/queueServices@2025-01-01' = {
+  parent: storage
   name: 'default'
   properties: {
     cors: {
@@ -501,8 +399,8 @@ resource Microsoft_Storage_storageAccounts_queueServices_storageAccounts_sahands
   }
 }
 
-resource Microsoft_Storage_storageAccounts_tableServices_storageAccounts_sahandson001_name_default 'Microsoft.Storage/storageAccounts/tableServices@2025-01-01' = {
-  parent: storageAccounts_sahandson001_name_resource
+resource Microsoft_Storage_storageAccounts_tableServices_storageName_default 'Microsoft.Storage/storageAccounts/tableServices@2025-01-01' = {
+  parent: storage
   name: 'default'
   properties: {
     cors: {
@@ -511,13 +409,9 @@ resource Microsoft_Storage_storageAccounts_tableServices_storageAccounts_sahands
   }
 }
 
-// ============================================
-// ネットワークインターフェース
-// ============================================
-resource networkInterfaces_vm_050170_name_resource 'Microsoft.Network/networkInterfaces@2024-07-01' = {
+resource resourceNaming_nic 'Microsoft.Network/networkInterfaces@2024-07-01' = {
   name: resourceNaming.nic
   location: location
-  tags: commonTags
   kind: 'Regular'
   properties: {
     ipConfigurations: [
@@ -527,7 +421,7 @@ resource networkInterfaces_vm_050170_name_resource 'Microsoft.Network/networkInt
           privateIPAddress: '10.0.2.4'
           privateIPAllocationMethod: 'Dynamic'
           subnet: {
-            id: virtualNetworks_vnet_handson_name_vm_subnet.id
+            id: resourceNaming_vnet_vmSubnet.id
           }
           primary: true
           privateIPAddressVersion: 'IPv4'
@@ -541,43 +435,41 @@ resource networkInterfaces_vm_050170_name_resource 'Microsoft.Network/networkInt
     enableIPForwarding: false
     disableTcpStateTracking: false
     networkSecurityGroup: {
-      id: networkSecurityGroups_vm_050_nsg_name_resource.id
+      id: resourceNaming_nsgVmLegacy.id
     }
     nicType: 'Standard'
     auxiliaryMode: 'None'
     auxiliarySku: 'None'
   }
+  dependsOn: [
+    resourceNaming_vnet_vmSubnet
+  ]
 }
 
-// ============================================
-// Private DNS Zone リンク
-// ============================================
-resource privateDnsZones_privatelink_blob_core_windows_net_name_63bhe7lgb2yni 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2024-06-01' = {
-  parent: privateDnsZones_privatelink_blob_core_windows_net_name_resource
-  name: uniqueString(resourceGroup().id)
+resource resourceNaming_privateDnsZone_id 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2024-06-01' = {
+  name: '${resourceNaming.privateDnsZone}/${uniqueString(resourceGroup().id)}'
   location: 'global'
   properties: {
     registrationEnabled: false
     resolutionPolicy: 'Default'
     virtualNetwork: {
-      id: virtualNetworks_vnet_handson_name_resource.id
+      id: resourceNaming_vnet.id
     }
   }
+  dependsOn: [
+    resourceNaming_privateDnsZone
+  ]
 }
 
-// ============================================
-// プライベートエンドポイント
-// ============================================
-resource privateEndpoints_pe_handson_blob_name_resource 'Microsoft.Network/privateEndpoints@2024-07-01' = {
+resource resourceNaming_pe 'Microsoft.Network/privateEndpoints@2024-07-01' = {
   name: resourceNaming.pe
   location: location
-  tags: commonTags
   properties: {
     privateLinkServiceConnections: [
       {
         name: resourceNaming.pe
         properties: {
-          privateLinkServiceId: storageAccounts_sahandson001_name_resource.id
+          privateLinkServiceId: storage.id
           groupIds: [
             'blob'
           ]
@@ -592,37 +484,36 @@ resource privateEndpoints_pe_handson_blob_name_resource 'Microsoft.Network/priva
     manualPrivateLinkServiceConnections: []
     customNetworkInterfaceName: resourceNaming.peNic
     subnet: {
-      id: virtualNetworks_vnet_handson_name_pe_subnet.id
+      id: resourceNaming_vnet_peSubnet.id
     }
     ipConfigurations: []
     customDnsConfigs: []
   }
+  dependsOn: [
+    resourceNaming_vnet_peSubnet
+  ]
 }
 
-resource privateEndpoints_pe_handson_blob_name_default 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2024-07-01' = {
+resource resourceNaming_pe_default 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2024-07-01' = {
   name: '${resourceNaming.pe}/default'
   properties: {
     privateDnsZoneConfigs: [
       {
         name: 'privatelink-blob-core-windows-net'
         properties: {
-          privateDnsZoneId: privateDnsZones_privatelink_blob_core_windows_net_name_resource.id
+          privateDnsZoneId: resourceNaming_privateDnsZone.id
         }
       }
     ]
   }
   dependsOn: [
-    privateEndpoints_pe_handson_blob_name_resource
+    resourceNaming_pe
   ]
 }
 
-// ============================================
-// 仮想ネットワーク
-// ============================================
-resource virtualNetworks_vnet_handson_name_resource 'Microsoft.Network/virtualNetworks@2024-07-01' = {
+resource resourceNaming_vnet 'Microsoft.Network/virtualNetworks@2024-07-01' = {
   name: resourceNaming.vnet
   location: location
-  tags: commonTags
   properties: {
     addressSpace: {
       addressPrefixes: [
@@ -643,7 +534,7 @@ resource virtualNetworks_vnet_handson_name_resource 'Microsoft.Network/virtualNe
         properties: {
           addressPrefix: vmSubnetAddressPrefix
           networkSecurityGroup: {
-            id: networkSecurityGroups_vnet_handson_vm_subnet_nsg_japaneast_name_resource.id
+            id: resourceNaming_nsgVm.id
           }
           serviceEndpoints: []
           delegations: []
@@ -657,7 +548,7 @@ resource virtualNetworks_vnet_handson_name_resource 'Microsoft.Network/virtualNe
         properties: {
           addressPrefix: peSubnetAddressPrefix
           networkSecurityGroup: {
-            id: networkSecurityGroups_vnet_handson_pe_subnet_nsg_japaneast_name_resource.id
+            id: resourceNaming_nsgPe.id
           }
           serviceEndpoints: []
           delegations: []
@@ -672,15 +563,12 @@ resource virtualNetworks_vnet_handson_name_resource 'Microsoft.Network/virtualNe
   }
 }
 
-// ============================================
-// サブネット
-// ============================================
-resource virtualNetworks_vnet_handson_name_pe_subnet 'Microsoft.Network/virtualNetworks/subnets@2024-07-01' = {
+resource resourceNaming_vnet_peSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-07-01' = {
   name: '${resourceNaming.vnet}/${peSubnetName}'
   properties: {
     addressPrefix: peSubnetAddressPrefix
     networkSecurityGroup: {
-      id: networkSecurityGroups_vnet_handson_pe_subnet_nsg_japaneast_name_resource.id
+      id: resourceNaming_nsgPe.id
     }
     serviceEndpoints: []
     delegations: []
@@ -689,16 +577,16 @@ resource virtualNetworks_vnet_handson_name_pe_subnet 'Microsoft.Network/virtualN
     defaultOutboundAccess: false
   }
   dependsOn: [
-    virtualNetworks_vnet_handson_name_resource
+    resourceNaming_vnet
   ]
 }
 
-resource virtualNetworks_vnet_handson_name_vm_subnet 'Microsoft.Network/virtualNetworks/subnets@2024-07-01' = {
+resource resourceNaming_vnet_vmSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-07-01' = {
   name: '${resourceNaming.vnet}/${vmSubnetName}'
   properties: {
     addressPrefix: vmSubnetAddressPrefix
     networkSecurityGroup: {
-      id: networkSecurityGroups_vnet_handson_vm_subnet_nsg_japaneast_name_resource.id
+      id: resourceNaming_nsgVm.id
     }
     serviceEndpoints: []
     delegations: []
@@ -707,15 +595,12 @@ resource virtualNetworks_vnet_handson_name_vm_subnet 'Microsoft.Network/virtualN
     defaultOutboundAccess: false
   }
   dependsOn: [
-    virtualNetworks_vnet_handson_name_resource
+    resourceNaming_vnet
   ]
 }
 
-// ============================================
-// ストレージコンテナー
-// ============================================
-resource storageAccounts_sahandson001_name_default_container 'Microsoft.Storage/storageAccounts/blobServices/containers@2025-01-01' = {
-  parent: storageAccounts_sahandson001_name_default
+resource storageName_default_container 'Microsoft.Storage/storageAccounts/blobServices/containers@2025-01-01' = {
+  parent: storageName_default
   name: 'container'
   properties: {
     immutableStorageWithVersioning: {
@@ -726,22 +611,19 @@ resource storageAccounts_sahandson001_name_default_container 'Microsoft.Storage/
     publicAccess: 'None'
   }
   dependsOn: [
-    storageAccounts_sahandson001_name_resource
+    storage
   ]
 }
 
-// ============================================
-// 出力値
-// ============================================
-output vnetId string = virtualNetworks_vnet_handson_name_resource.id
-output vnetName string = virtualNetworks_vnet_handson_name_resource.name
-output vmId string = virtualMachines_vm_050_name_resource.id
-output vmName string = virtualMachines_vm_050_name_resource.name
-output storageAccountId string = storageAccounts_sahandson001_name_resource.id
-output storageAccountName string = storageAccounts_sahandson001_name_resource.name
-output storageAccountPrimaryBlobEndpoint string = storageAccounts_sahandson001_name_resource.properties.primaryBlobEndpoint
-output nicId string = networkInterfaces_vm_050170_name_resource.id
-output privateEndpointId string = privateEndpoints_pe_handson_blob_name_resource.id
-output bastionId string = enableBastion ? bastionHosts_vnet_handson_bastion_name_resource.id : 'Bastion not enabled'
+output vnetId string = resourceNaming_vnet.id
+output vnetName string = resourceNaming.vnet
+output vmId string = resourceNaming_vm.id
+output vmName string = resourceNaming.vm
+output storageAccountId string = storage.id
+output storageAccountName string = storageName
+output storageAccountPrimaryBlobEndpoint string = reference(storage.id, '2025-01-01').primaryBlobEndpoint
+output nicId string = resourceNaming_nic.id
+output privateEndpointId string = resourceNaming_pe.id
+output bastionId string = (enableBastion ? resourceNaming_bastion.id : 'Bastion not enabled')
 output resourceGroup string = resourceGroup().name
 output location string = location
