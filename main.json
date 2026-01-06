@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.38.33.27573",
-      "templateHash": "17026066670120453228"
+      "templateHash": "13508153033500064492"
     },
     "description": "Azure Infrastructure as Code テンプレート - VM, Storage, Network, Bastion",
     "author": "Infrastructure Team"
@@ -270,8 +270,7 @@
             }
           },
           "secrets": [],
-          "allowExtensionOperations": true,
-          "requireGuestProvisionSignal": false
+          "allowExtensionOperations": true
         },
         "securityProfile": {
           "uefiSettings": {

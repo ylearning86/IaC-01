@@ -236,7 +236,6 @@ resource resourceNaming_vm 'Microsoft.Compute/virtualMachines@2024-11-01' = {
       }
       secrets: []
       allowExtensionOperations: true
-      requireGuestProvisionSignal: false
     }
     securityProfile: {
       uefiSettings: {
