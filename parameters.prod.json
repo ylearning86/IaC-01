@@ -1,0 +1,78 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "japaneast"
+    },
+    "projectName": {
+      "value": "handson"
+    },
+    "userNumber": {
+      "value": "001"
+    },
+    "environment": {
+      "value": "prod"
+    },
+    "vmName": {
+      "value": "vm-001"
+    },
+    "vmSize": {
+      "value": "Standard_D4s_v3"
+    },
+    "vmAdminUsername": {
+      "value": "azureuser"
+    },
+    "vmOsVersion": {
+      "value": "2025-datacenter-azure-edition"
+    },
+    "storageName": {
+      "value": ""
+    },
+    "storageSkuName": {
+      "value": "Standard_GRS"
+    },
+    "storagePublicNetworkAccess": {
+      "value": "Disabled"
+    },
+    "storageDefaultAction": {
+      "value": "Deny"
+    },
+    "vnetName": {
+      "value": "vnet-handson"
+    },
+    "vnetAddressSpace": {
+      "value": "10.0.0.0/16"
+    },
+    "vmSubnetName": {
+      "value": "vm-subnet"
+    },
+    "vmSubnetAddressPrefix": {
+      "value": "10.0.1.0/24"
+    },
+    "peSubnetName": {
+      "value": "pe-subnet"
+    },
+    "peSubnetAddressPrefix": {
+      "value": "10.0.2.0/24"
+    },
+    "enableBastion": {
+      "value": true
+    },
+    "bastionSkuName": {
+      "value": "Standard"
+    },
+    "bastionScaleUnits": {
+      "value": 3
+    },
+    "tagEnvironment": {
+      "value": "prod"
+    },
+    "tagProject": {
+      "value": "handson"
+    },
+    "tagCostCenter": {
+      "value": "IT"
+    }
+  }
+}
