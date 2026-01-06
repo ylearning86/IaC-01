@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.38.33.27573",
-      "templateHash": "16015517227362452298"
+      "templateHash": "17026066670120453228"
     },
     "description": "Azure Infrastructure as Code テンプレート - VM, Storage, Network, Bastion",
     "author": "Infrastructure Team"
@@ -271,7 +271,7 @@
           },
           "secrets": [],
           "allowExtensionOperations": true,
-          "requireGuestProvisionSignal": true
+          "requireGuestProvisionSignal": false
         },
         "securityProfile": {
           "uefiSettings": {
@@ -422,22 +422,6 @@
         "shareDeleteRetentionPolicy": {
           "enabled": true,
           "days": 7
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
-      "apiVersion": "2025-01-01",
-      "name": "[format('{0}/{1}', variables('storageName'), format('{0}.e9af9228-99fe-4a66-aa9e-7b7e0657bd72', variables('storageName')))]",
-      "properties": {
-        "privateEndpoint": {},
-        "privateLinkServiceConnectionState": {
-          "status": "Approved",
-          "description": "Auto-Approved",
-          "actionRequired": "None"
         }
       },
       "dependsOn": [

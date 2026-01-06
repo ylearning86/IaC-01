@@ -236,7 +236,7 @@ resource resourceNaming_vm 'Microsoft.Compute/virtualMachines@2024-11-01' = {
       }
       secrets: []
       allowExtensionOperations: true
-      requireGuestProvisionSignal: true
+      requireGuestProvisionSignal: false
     }
     securityProfile: {
       uefiSettings: {
@@ -372,19 +372,6 @@ resource Microsoft_Storage_storageAccounts_fileServices_storageName_default 'Mic
     shareDeleteRetentionPolicy: {
       enabled: true
       days: 7
-    }
-  }
-}
-
-resource storageName_storageName_e9af9228_99fe_4a66_aa9e_7b7e0657bd72 'Microsoft.Storage/storageAccounts/privateEndpointConnections@2025-01-01' = {
-  parent: storage
-  name: '${storageName}.e9af9228-99fe-4a66-aa9e-7b7e0657bd72'
-  properties: {
-    privateEndpoint: {}
-    privateLinkServiceConnectionState: {
-      status: 'Approved'
-      description: 'Auto-Approved'
-      actionRequired: 'None'
     }
   }
 }
