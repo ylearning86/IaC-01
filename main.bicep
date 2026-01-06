@@ -62,16 +62,15 @@ param userNumber string = '001'
 @description('仮想マシンのサイズ (例: Standard_D2s_v3, Standard_D4s_v3)')
 param vmSize string = 'Standard_D2s_v3'
 
+@description('VM管理者ユーザー名')
+param vmAdminUsername string = 'azureuser'
+
 @description('VM管理者パスワード (8文字以上、大文字・小文字・数字・特殊文字を含む)')
 @secure()
 param vmAdminPassword string
 
-@description('Azure Bastion (Developer SKU) をデプロイするかどうか')
-param enableBastion bool = true
-
 // 固定値（ポータルに表示しない）
 var vmName = 'vm-${userNumber}'
-var vmAdminUsername = 'azureuser'
 var vmOsVersion = '2025-datacenter-azure-edition'
 var storageName = 'sahandson${userNumber}'
 var storageSkuName = 'Standard_RAGRS'
@@ -85,6 +84,7 @@ var peSubnetName = 'pe-subnet'
 var peSubnetAddressPrefix = '10.0.2.0/24'
 var bastionSkuName = 'Developer'
 var bastionScaleUnits = 2
+var enableBastion = false
 
 var resourceNaming = {
   vm: vmName

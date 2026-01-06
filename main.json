@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.38.33.27573",
-      "templateHash": "14951411377269469001"
+      "templateHash": "16015517227362452298"
     },
     "description": "Azure Infrastructure as Code テンプレート - VM, Storage, Network, Bastion",
     "author": "Infrastructure Team"
@@ -84,23 +84,22 @@
         "description": "仮想マシンのサイズ (例: Standard_D2s_v3, Standard_D4s_v3)"
       }
     },
+    "vmAdminUsername": {
+      "type": "string",
+      "defaultValue": "azureuser",
+      "metadata": {
+        "description": "VM管理者ユーザー名"
+      }
+    },
     "vmAdminPassword": {
       "type": "securestring",
       "metadata": {
         "description": "VM管理者パスワード (8文字以上、大文字・小文字・数字・特殊文字を含む)"
       }
-    },
-    "enableBastion": {
-      "type": "bool",
-      "defaultValue": true,
-      "metadata": {
-        "description": "Azure Bastion (Developer SKU) をデプロイするかどうか"
-      }
     }
   },
   "variables": {
     "vmName": "[format('vm-{0}', parameters('userNumber'))]",
-    "vmAdminUsername": "azureuser",
     "vmOsVersion": "2025-datacenter-azure-edition",
     "storageName": "[format('sahandson{0}', parameters('userNumber'))]",
     "storageSkuName": "Standard_RAGRS",
@@ -114,6 +113,7 @@
     "peSubnetAddressPrefix": "10.0.2.0/24",
     "bastionSkuName": "Developer",
     "bastionScaleUnits": 2,
+    "enableBastion": false,
     "resourceNaming": {
       "vm": "[variables('vmName')]",
       "nic": "[format('vm-{0}-nic', parameters('userNumber'))]",
@@ -255,7 +255,7 @@
         },
         "osProfile": {
           "computerName": "[variables('resourceNaming').vm]",
-          "adminUsername": "[variables('vmAdminUsername')]",
+          "adminUsername": "[parameters('vmAdminUsername')]",
           "adminPassword": "[parameters('vmAdminPassword')]",
           "windowsConfiguration": {
             "provisionVMAgent": true,
@@ -301,7 +301,7 @@
       ]
     },
     {
-      "condition": "[parameters('enableBastion')]",
+      "condition": "[variables('enableBastion')]",
       "type": "Microsoft.Network/bastionHosts",
       "apiVersion": "2024-07-01",
       "name": "[variables('resourceNaming').bastion]",
@@ -734,7 +734,7 @@
     },
     "bastionId": {
       "type": "string",
-      "value": "[if(parameters('enableBastion'), resourceId('Microsoft.Network/bastionHosts', variables('resourceNaming').bastion), 'Bastion not enabled')]"
+      "value": "[if(variables('enableBastion'), resourceId('Microsoft.Network/bastionHosts', variables('resourceNaming').bastion), 'Bastion not enabled')]"
     },
     "resourceGroup": {
       "type": "string",
