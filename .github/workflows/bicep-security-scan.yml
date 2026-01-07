@@ -1,0 +1,162 @@
+name: Bicep Security Scan
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'bicep/**/*.bicep'
+      - 'bicep/**/*.json'
+      - '.github/workflows/bicep-security-scan.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'bicep/**/*.bicep'
+      - 'bicep/**/*.json'
+      - '.github/workflows/bicep-security-scan.yml'
+  workflow_dispatch:
+
+jobs:
+  security-scan:
+    name: Bicep Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bicep
+        run: |
+          # Bicep is pre-installed on GitHub runners, but ensure latest version
+          az bicep upgrade
+
+      - name: Bicep Lint
+        run: |
+          echo "🔍 Running Bicep linter..."
+          for file in bicep/*.bicep; do
+            if [ -f "$file" ]; then
+              echo "Checking $file"
+              az bicep build --file "$file" --stdout > /dev/null
+            fi
+          done
+
+      - name: Run Microsoft Security DevOps
+        uses: microsoft/security-devops-action@v1
+        id: msdo
+        with:
+          categories: 'IaC'
+          tools: 'templateanalyzer'
+
+      - name: Upload results to Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: ${{ steps.msdo.outputs.sarifFile }}
+
+      - name: Upload scan results as artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-scan-results
+          path: ${{ steps.msdo.outputs.sarifFile }}
+
+  checkov-scan:
+    name: Checkov IaC Scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Checkov
+        id: checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: bicep/
+          framework: bicep
+          output_format: sarif
+          output_file_path: checkov-results.sarif
+          soft_fail: true
+
+      - name: Upload Checkov results to Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: checkov-results.sarif
+
+      - name: Upload Checkov results as artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: checkov-scan-results
+          path: checkov-results.sarif
+
+  psrule-scan:
+    name: PSRule for Azure
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bicep
+        run: |
+          az bicep upgrade
+
+      - name: Build Bicep to ARM
+        run: |
+          echo "🔨 Building Bicep files to ARM templates..."
+          for file in bicep/*.bicep; do
+            if [ -f "$file" ]; then
+              echo "Building $file"
+              az bicep build --file "$file"
+            fi
+          done
+
+      - name: Run PSRule for Azure
+        uses: microsoft/ps-rule@v2.9.0
+        with:
+          modules: PSRule.Rules.Azure
+          inputPath: bicep/
+          outputFormat: Sarif
+          outputPath: psrule-results.sarif
+        continue-on-error: true
+
+      - name: Upload PSRule results to Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: psrule-results.sarif
+
+      - name: Upload PSRule results as artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: psrule-scan-results
+          path: psrule-results.sarif
+
+  summary:
+    name: Security Scan Summary
+    runs-on: ubuntu-latest
+    needs: [security-scan, checkov-scan, psrule-scan]
+    if: always()
+
+    steps:
+      - name: Summary
+        run: |
+          echo "## 🔒 Bicep Security Scan Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Microsoft Security DevOps: ${{ needs.security-scan.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Checkov IaC Scan: ${{ needs.checkov-scan.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "✅ PSRule for Azure: ${{ needs.psrule-scan.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "📊 Results have been uploaded to the [Security tab](../security/code-scanning)" >> $GITHUB_STEP_SUMMARY
