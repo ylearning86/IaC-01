@@ -1,0 +1,31 @@
+# Bicep build artifacts
+*.json.bak
+.bicep/
+
+# Security scan results
+*.sarif
+checkov-results.*
+psrule-results.*
+security-scan-results.*
+
+# Azure credentials
+.azure/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+temp/
+tmp/

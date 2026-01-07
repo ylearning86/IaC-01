@@ -2,6 +2,17 @@
 
 Azure ポータルからエクスポートしたテンプレートを再利用可能な形に改善した Bicep テンプレートです。
 
+## 🔒 セキュリティ
+
+このリポジトリでは、Bicep テンプレートのセキュリティ脆弱性を自動的にスキャンしています。
+
+- ✅ 自動セキュリティスキャン（GitHub Actions）
+- ✅ Microsoft Security DevOps
+- ✅ Checkov IaC セキュリティチェック
+- ✅ PSRule for Azure ポリシー検証
+
+**脆弱性チェック方法の詳細**: [SECURITY-SCANNING.md](./SECURITY-SCANNING.md)
+
 ## クイックデプロイ
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fylearning86%2FIaC-01%2Fmain%2Fbicep%2Fmain.json)
@@ -35,6 +46,12 @@ Deploy to Azure ボタンを使用する場合、以下のパラメータのみ�
 ```
 IaC-01/
 ├── README.md
+├── SECURITY-SCANNING.md        # セキュリティスキャンガイド
+├── .github/
+│   └── workflows/
+│       └── bicep-security-scan.yml  # 自動セキュリティスキャン
+├── scripts/
+│   └── scan-bicep-security.sh  # ローカルスキャンスクリプト
 └── bicep/
     ├── main.bicep              # メインテンプレート
     ├── main.json               # コンパイル済みARMテンプレート
@@ -333,6 +350,22 @@ az group delete --name rg-handson --yes --no-wait
 ```
 
 ## ベストプラクティス
+
+### セキュリティスキャン
+
+デプロイ前にセキュリティ脆弱性をチェック：
+
+```bash
+# ローカルでセキュリティスキャンを実行
+./scripts/scan-bicep-security.sh
+
+# または個別に Bicep Lint を実行
+az bicep build --file bicep/main.bicep
+```
+
+**詳細なガイド**: [SECURITY-SCANNING.md](./SECURITY-SCANNING.md) を参照してください。
+
+GitHub にプッシュすると自動的にセキュリティスキャンが実行され、結果は Security タブで確認できます。
 
 ### テンプレートの検証
 
