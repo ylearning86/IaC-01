@@ -76,7 +76,7 @@ if command -v pwsh &> /dev/null; then
         done
         
         # PSRule 実行
-        pwsh -Command "Assert-PSRule -Module PSRule.Rules.Azure -InputPath '$BICEP_DIR' -Format File -OutputFormat Console" || true
+        pwsh -Command "Assert-PSRule -Module PSRule.Rules.Azure -InputPath \"$BICEP_DIR\" -Format File -OutputFormat Console" || true
     else
         echo "⚠️  PSRule.Rules.Azure モジュールが見つかりません"
         echo "   インストール: Install-Module -Name PSRule.Rules.Azure -Scope CurrentUser"
