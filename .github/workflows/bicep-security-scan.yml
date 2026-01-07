@@ -36,11 +36,18 @@ jobs:
       - name: Bicep Lint
         run: |
           echo "🔍 Running Bicep linter..."
-          for file in bicep/*.bicep; do
-            if [ -f "$file" ]; then
-              echo "Checking $file"
-              az bicep build --file "$file" --stdout > /dev/null
-            fi
+          shopt -s nullglob
+          bicep_files=(bicep/*.bicep)
+          shopt -u nullglob
+          
+          if [ ${#bicep_files[@]} -eq 0 ]; then
+            echo "⚠️ No Bicep files found"
+            exit 0
+          fi
+          
+          for file in "${bicep_files[@]}"; do
+            echo "Checking $file"
+            az bicep build --file "$file" --stdout > /dev/null
           done
 
       - name: Run Microsoft Security DevOps
@@ -115,11 +122,18 @@ jobs:
       - name: Build Bicep to ARM
         run: |
           echo "🔨 Building Bicep files to ARM templates..."
-          for file in bicep/*.bicep; do
-            if [ -f "$file" ]; then
-              echo "Building $file"
-              az bicep build --file "$file"
-            fi
+          shopt -s nullglob
+          bicep_files=(bicep/*.bicep)
+          shopt -u nullglob
+          
+          if [ ${#bicep_files[@]} -eq 0 ]; then
+            echo "⚠️ No Bicep files found"
+            exit 0
+          fi
+          
+          for file in "${bicep_files[@]}"; do
+            echo "Building $file"
+            az bicep build --file "$file"
           done
 
       - name: Run PSRule for Azure

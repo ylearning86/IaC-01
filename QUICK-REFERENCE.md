@@ -28,7 +28,7 @@ az bicep build --file bicep/main.bicep
 
 ### Checkov のみ実行（Docker）
 ```bash
-docker run --rm -v $(pwd):/tf bridgecrew/checkov -d /tf/bicep --framework bicep
+docker run --rm -v "$(pwd)":/tf bridgecrew/checkov -d /tf/bicep --framework bicep
 ```
 
 ### GitHub Actions を手動実行

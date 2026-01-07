@@ -86,7 +86,7 @@ checkov -d bicep/ --framework bicep --output cli
 pip install checkov
 
 # または Docker で実行
-docker run --rm -v $(pwd):/tf bridgecrew/checkov -d /tf/bicep --framework bicep
+docker run --rm -v "$(pwd)":/tf bridgecrew/checkov -d /tf/bicep --framework bicep
 ```
 
 #### 3. PSRule for Azure（Azure ポリシーチェック）
