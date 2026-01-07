@@ -20,8 +20,14 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 if command -v az &> /dev/null; then
     echo "✅ Azure CLI が見つかりました"
     
-    for file in "$BICEP_DIR"/*.bicep; do
-        if [ -f "$file" ]; then
+    shopt -s nullglob
+    bicep_files=("$BICEP_DIR"/*.bicep)
+    shopt -u nullglob
+    
+    if [ ${#bicep_files[@]} -eq 0 ]; then
+        echo "⚠️  Bicep ファイルが見つかりませんでした"
+    else
+        for file in "${bicep_files[@]}"; do
             echo ""
             echo "📄 チェック中: $(basename "$file")"
             if az bicep build --file "$file" --stdout > /dev/null 2>&1; then
@@ -30,8 +36,8 @@ if command -v az &> /dev/null; then
                 echo "  ❌ 構文チェック: エラーが見つかりました"
                 az bicep build --file "$file" 2>&1 | grep -E "Warning|Error" || true
             fi
-        fi
-    done
+        done
+    fi
 else
     echo "⚠️  Azure CLI が見つかりません。スキップします。"
     echo "   インストール: https://learn.microsoft.com/ja-jp/cli/azure/install-azure-cli"
@@ -69,10 +75,12 @@ if command -v pwsh &> /dev/null; then
         echo ""
         
         # ARM テンプレートにビルド
-        for file in "$BICEP_DIR"/*.bicep; do
-            if [ -f "$file" ]; then
-                az bicep build --file "$file" 2>/dev/null || true
-            fi
+        shopt -s nullglob
+        bicep_files=("$BICEP_DIR"/*.bicep)
+        shopt -u nullglob
+        
+        for file in "${bicep_files[@]}"; do
+            az bicep build --file "$file" 2>/dev/null || true
         done
         
         # PSRule 実行

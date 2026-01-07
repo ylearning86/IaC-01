@@ -159,4 +159,4 @@ jobs:
           echo "✅ Checkov IaC Scan: ${{ needs.checkov-scan.result }}" >> $GITHUB_STEP_SUMMARY
           echo "✅ PSRule for Azure: ${{ needs.psrule-scan.result }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "📊 Results have been uploaded to the [Security tab](../security/code-scanning)" >> $GITHUB_STEP_SUMMARY
+          echo "📊 Results have been uploaded to the Security tab (Code scanning section)" >> $GITHUB_STEP_SUMMARY
